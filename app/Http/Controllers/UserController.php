@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\User; 
 use Illuminate\Support\Facades\Auth; 
 use Validator;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -29,16 +30,11 @@ class UserController extends Controller
     // Verify Token
 
     public function verifyToken(Request $request){
-        // if($request->isMethod('post')){
+        if($request->isMethod('post')){
             
-            // $requestToken = $request->only('token');
-
-            $requestToken = '2566c82f2a3e2c4adc77a1853795745530ae43a248bb75fcf8d7defb5d375b165aa7e903d143554e';
-
-            $user = Auth::token();
-
-            return response()->json( ['success' => $user ] , 200 ); 
-        // };
+            $verifyToken = DB::table('oauth_access_tokens')->where('id', request('token'))->count();
+        
+        };
     }
 
     // Register API
