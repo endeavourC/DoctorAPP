@@ -1,5 +1,5 @@
 export const registerUser = async values => {
-    const request = await fetch(`http://127.0.0.1:8000/api/register`, {
+    const request = await fetch(`http://127.0.0.1:8000/api/user/register`, {
         method: "POST",
         headers: {
             "Content-type": "application/json"
@@ -11,7 +11,7 @@ export const registerUser = async values => {
 };
 
 export const loginUser = async values => {
-    const request = await fetch(`http://127.0.0.1:8000/api/login`, {
+    const request = await fetch(`http://127.0.0.1:8000/api/user/login`, {
         method: "POST",
         headers: {
             "Content-type": "application/json"
@@ -23,3 +23,16 @@ export const loginUser = async values => {
 
     return data;
 };
+
+export const getCurrentUser = async token => {
+    const request = await fetch(`http://127.0.0.1:8000/api/user/current`, {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    });
+    const data = await request.json();
+
+    return data;
+};
+
+export const logoutUser = async () => {};

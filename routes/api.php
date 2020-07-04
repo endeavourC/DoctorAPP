@@ -16,8 +16,9 @@ use Illuminate\Http\Request;
 //     return $request->user();
 // });
 
-
-Route::post('/login', 'UserController@login');
-Route::post('/register', 'UserController@register');
-
-Route::get('/verifyToken', 'UserController@verifyToken');
+Route::prefix('/user')->group(function(){
+    Route::post('/login', 'UserController@login');
+    Route::post('/register', 'UserController@register');
+    Route::middleware('auth:api')->post('/logout', 'UserController@logout');
+    Route::middleware('auth:api')->get('/current', 'UserController@currentUser');
+});

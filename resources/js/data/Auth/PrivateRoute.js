@@ -1,10 +1,16 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Route, Redirect, withRouter } from "react-router-dom";
 import { UserContext } from "../../data/context/user.context";
-
-// 3.3
+import { getCurrentUser } from "../fetch/user.fetch";
 const PrivateRoute = ({ component: Component, path, ...rest }) => {
     const user = useContext(UserContext);
+
+    useEffect(() => {
+        const currentUser = getCurrentUser(user.user.token).then(res => {
+            console.log(res);
+        });
+    }, []);
+
     return (
         <Route
             path={path}

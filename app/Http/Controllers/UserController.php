@@ -27,15 +27,12 @@ class UserController extends Controller
         }
     }
 
-    // Verify Token
+    // Current User
 
-    public function verifyToken(Request $request){
-        if($request->isMethod('post')){
-            
-            $verifyToken = DB::table('oauth_access_tokens')->where('id', request('token'))->count();
-        
-        };
+    public function currentUser(){
+     return response()->json( ['success' => Auth::user()  ] , 200);
     }
+
 
     // Register API
     public function register(Request $request){
@@ -68,6 +65,11 @@ class UserController extends Controller
 
     }
 
+    public function logout(){
+        auth()->user()->token()->revoke();
+
+        return response()->json([ 'success' => 'Succesly logout.' ] , 200);
+    }
 
 
 }
