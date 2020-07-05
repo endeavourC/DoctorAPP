@@ -24,7 +24,7 @@ export const loginUser = async values => {
     return data;
 };
 
-export const getCurrentUser = async token => {
+export const getCurrentUser = async (key, { token }) => {
     const request = await fetch(`http://127.0.0.1:8000/api/user/current`, {
         headers: {
             Authorization: `Bearer ${token}`

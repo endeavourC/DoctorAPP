@@ -1,44 +1,51 @@
 import React, { createContext, useState, useEffect } from "react";
+import { useQuery } from "react-query";
+import { getCurrentUser } from "../fetch/user.fetch";
 
 export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
-    const [user, setUser] = useState({
-        token: null,
-        name: null
-    });
+    const [isLogged, setLogged] = useState(false);
 
-    useEffect(() => {
+    const getToken = () => {
         if (localStorage.getItem("loggedUser")) {
-            const currentUser = JSON.parse(localStorage.getItem("loggedUser"));
-            setUser(currentUser);
+            return JSON.parse(localStorage.getItem("loggedUser")).token;
+        } else {
+            return null;
         }
-    }, []);
+    };
 
-    const loginUser = ({ token, name }) => {
-        setUser({
-            token,
-            name
-        });
+    const loginUser = ({ token }) => {
+        setLogged(true);
         localStorage.setItem(
             "loggedUser",
             JSON.stringify({
-                token,
-                name
+                token
             })
         );
     };
 
+    const getUser = () => {
+        const token = getToken();
+        if (token !== null) {
+        }
+        const { status, isLoading, isError, isSuccess } = useQuery(
+            ["user_id", { token }],
+            getCurrentUser,
+            {
+                retry: 0,
+                retryDelay: 0
+            }
+        );
+        return { status, isLoading, isError, isSuccess };
+    };
+
     const logoutUser = () => {
-        setUser({
-            token: null,
-            name: null
-        });
+        setLogged(false);
         localStorage.setItem(
             "loggedUser",
             JSON.stringify({
-                token: null,
-                name: null
+                token: null
             })
         );
     };
@@ -46,7 +53,9 @@ export const UserProvider = ({ children }) => {
     return (
         <UserContext.Provider
             value={{
-                user,
+                isLogged,
+                getUser,
+                getToken,
                 login: loginUser,
                 logout: logoutUser
             }}

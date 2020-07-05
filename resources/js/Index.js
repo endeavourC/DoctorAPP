@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "bootstrap-css-only/css/bootstrap.min.css";
 import "mdbreact/dist/css/mdb.css";
-import { BrowserRouter as Router, Link, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import ErrorPage from "./pages/404";
 import Login from "./pages/Login";
 import Register from "./pages/Register";

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
     MDBNavbar,
     MDBNavbarBrand,
@@ -7,22 +7,16 @@ import {
     MDBNavLink,
     MDBNavbarToggler,
     MDBCollapse,
-    MDBFormInline,
-    MDBDropdown,
-    MDBDropdownToggle,
-    MDBDropdownMenu,
-    MDBDropdownItem,
-    MDBBtn
+    MDBFormInline
 } from "mdbreact";
 import { UserContext } from "../../data/context/user.context";
 const Header = () => {
+    const user = useContext(UserContext);
     const [isOpen, setOpen] = useState(false);
 
-    const user = useContext(UserContext);
     const toggleCollapse = () => {
         setOpen(!isOpen);
     };
-
     return (
         <MDBNavbar color="indigo" dark expand="md">
             <MDBNavbarBrand>
@@ -34,7 +28,7 @@ const Header = () => {
                     <MDBNavItem>
                         <MDBNavLink to="/">Home</MDBNavLink>
                     </MDBNavItem>
-                    {user.user.token ? (
+                    {user.isLogged ? (
                         <>
                             <MDBNavItem>
                                 <MDBNavLink to="/dashboard">

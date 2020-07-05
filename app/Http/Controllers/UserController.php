@@ -30,7 +30,11 @@ class UserController extends Controller
     // Current User
 
     public function currentUser(){
-     return response()->json( ['success' => Auth::user()  ] , 200);
+        if(Auth::check()){
+            return response()->json( [ 'status' => 'authorized' ,'userID' => Auth::user()->getID() ] , 200);
+        } else {
+            return response()->json( [ 'status' => 'unauthorized' ,'userID' => 0] , 401);
+        }
     }
 
 
