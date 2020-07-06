@@ -31,17 +31,8 @@ class UserController extends Controller
 
     public function current(){
 
-        if(auth()->user()){
+            return response()->json(['status'=> Auth::user()->getID() ] ,200);
 
-            return response()->json(['status'=> auth('api')->user() ] ,200);
-        } else {
-            return response()->json(['status'=> '' ] ,200);
-        }
-        // if(auth()->user()->check()){
-        //     return response()->json( [ 'status' => 'authorized' ,'userID' => Auth::user()->getID() ] , 200);
-        // } else {
-        //     return response()->json( [ 'status' => 'unauthorized'  ] , 401);
-        // }
     }
 
 
@@ -75,8 +66,8 @@ class UserController extends Controller
 
     }
 
-    public function logout(Request $request){
-        $request->user()->token()->revoke();
+    public function logout(){
+        auth()->user()->token()->delete();
 
         return response()->json([ 'success' => 'Succesly logout.' ] , 200);
     }

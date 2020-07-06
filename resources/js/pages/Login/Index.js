@@ -11,7 +11,7 @@ const Login = () => {
     const user = useContext(UserContext);
 
     if (user.getToken() !== null) {
-        const { isLoading, data } = user.getUser();
+        const { isLoading, data } = user.isAuthUser();
         if (isLoading) {
             return <Loader />;
         }

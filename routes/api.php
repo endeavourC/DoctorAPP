@@ -19,7 +19,6 @@ use Illuminate\Http\Request;
 Route::prefix('/user')->group(function(){
     Route::post('/login', 'UserController@login');
     Route::post('/register', 'UserController@register');
-    // Route::get('/current', 'UserController@current');
     Route::middleware('auth:api')->get('/current', 'UserController@current');
     Route::middleware('auth:api')->post('/logout', 'UserController@logout');
 });

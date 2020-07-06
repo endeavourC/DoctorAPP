@@ -1,6 +1,6 @@
 import React, { createContext, useState, useEffect } from "react";
 import { useQuery } from "react-query";
-import { getCurrentUser, logoutUser as logout } from "../fetch/user.fetch";
+import { isCurrentUserAuth, logoutUser as logout } from "../fetch/user.fetch";
 
 export const UserContext = createContext();
 
@@ -31,11 +31,11 @@ export const UserProvider = ({ children }) => {
         );
     };
 
-    const getUser = () => {
+    const isAuthUser = () => {
         const token = getToken();
         const { status, isLoading, isError, isSuccess, data } = useQuery(
             ["user_id", { token }],
-            getCurrentUser,
+            isCurrentUserAuth,
             {
                 retry: 0,
                 retryDelay: 0,
@@ -46,6 +46,7 @@ export const UserProvider = ({ children }) => {
     };
 
     const logoutUser = () => {
+        logout(getToken());
         setLogged(false);
         localStorage.setItem(
             "loggedUser",
@@ -59,7 +60,7 @@ export const UserProvider = ({ children }) => {
         <UserContext.Provider
             value={{
                 isLogged,
-                getUser,
+                isAuthUser,
                 getToken,
                 login: loginUser,
                 logout: logoutUser
