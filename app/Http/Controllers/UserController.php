@@ -29,12 +29,19 @@ class UserController extends Controller
 
     // Current User
 
-    public function currentUser(){
-        if(Auth::check()){
-            return response()->json( [ 'status' => 'authorized' ,'userID' => Auth::user()->getID() ] , 200);
+    public function current(){
+
+        if(auth()->user()){
+
+            return response()->json(['status'=> auth('api')->user() ] ,200);
         } else {
-            return response()->json( [ 'status' => 'unauthorized' ,'userID' => 0] , 401);
+            return response()->json(['status'=> '' ] ,200);
         }
+        // if(auth()->user()->check()){
+        //     return response()->json( [ 'status' => 'authorized' ,'userID' => Auth::user()->getID() ] , 200);
+        // } else {
+        //     return response()->json( [ 'status' => 'unauthorized'  ] , 401);
+        // }
     }
 
 
@@ -62,15 +69,14 @@ class UserController extends Controller
             $user = User::create($data);
 
             $success['token'] = $user->createToken('doctorapp_auth')->accessToken;
-            $success['name'] = $user->name;
     
             return response()->json([ 'success' => $success ] , 200);
         };
 
     }
 
-    public function logout(){
-        auth()->user()->token()->revoke();
+    public function logout(Request $request){
+        $request->user()->token()->revoke();
 
         return response()->json([ 'success' => 'Succesly logout.' ] , 200);
     }

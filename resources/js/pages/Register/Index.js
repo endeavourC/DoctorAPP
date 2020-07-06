@@ -1,7 +1,7 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { MDBContainer, MDBInput, MDBBtn } from "mdbreact";
 import { Formik } from "formik";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useHistory, Redirect } from "react-router-dom";
 import Loader from "../../components/Loader";
 import { registerUser } from "../../data/fetch/user.fetch";
 import { UserContext } from "../../data/context/user.context";
@@ -9,6 +9,23 @@ import { RES_ERROR } from "../../data/constants/user.constants";
 const Register = () => {
     const history = useHistory();
     const user = useContext(UserContext);
+
+    if (user.getToken() !== null) {
+        const { isLoading, data } = user.getUser();
+        if (isLoading) {
+            return <Loader />;
+        }
+        if (!isLoading && data.message !== UNAUTHORIZED) {
+            return (
+                <Redirect
+                    to={{
+                        pathname: "/dashboard"
+                    }}
+                />
+            );
+        }
+    }
+
     return (
         <MDBContainer className="pt-5">
             <h3 className="text-center">Sign up in our DoctorApp</h3>
