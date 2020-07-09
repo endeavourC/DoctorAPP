@@ -9,6 +9,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
+import CreateOffer from "./pages/Dashboard/Create-Offer";
 import Header from "./components/Header";
 import PrivateRoute from "./data/Auth/PrivateRoute";
 // Context API
@@ -23,7 +24,16 @@ function App() {
                     <Route exact path="/" component={Home} />
                     <Route path="/login" component={Login} />
                     <Route path="/register" component={Register} />
-                    <PrivateRoute path="/dashboard" component={Dashboard} />
+                    <PrivateRoute
+                        exact
+                        path="/dashboard"
+                        component={Dashboard}
+                    />
+                    <PrivateRoute
+                        exact
+                        path="/dashboard/create-offer"
+                        component={CreateOffer}
+                    />
                     <Route component={ErrorPage} />
                 </Switch>
             </Router>

@@ -31,10 +31,16 @@ class UserController extends Controller
 
     public function current(){
 
-            return response()->json(['status'=> Auth::user()->getID() ] ,200);
+        return response()->json(['status'=> Auth::user()->getID() ] ,200);
 
     }
 
+
+    public function getUserData(){
+
+        return response()->json(['data' => Auth::user() ], 200);
+
+    }
 
     // Register API
     public function register(Request $request){
