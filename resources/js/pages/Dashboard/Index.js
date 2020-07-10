@@ -1,17 +1,23 @@
 import React, { useContext } from "react";
-import { BrowserRouter } from "react-router-dom";
 import { MDBContainer, MDBRow, MDBCol, MDBNav, MDBNavLink } from "mdbreact";
 import { getUserData } from "../../data/fetch/user.fetch";
-import { useQuery } from "react-query";
+import { getOffersByUserId } from "../../data/fetch/offer.fetch";
+import { useQuery, queryCache } from "react-query";
 import { UserContext } from "../../data/context/user.context";
 import Loader from "../../components/Loader";
+import OfferCard from "../../components/Card";
 const Dashboard = () => {
     const { getToken } = useContext(UserContext);
     const token = getToken();
+
     const { isLoading, data } = useQuery(["userData", { token }], getUserData, {
         refetchOnWindowFocus: false
     });
-
+    const userId = data && data.data.id;
+    const userOffers = useQuery(["userOffers", { userId }], getOffersByUserId, {
+        refetchOnWindowFocus: false
+    });
+    console.log(userOffers);
     if (isLoading) return <Loader />;
 
     return (
@@ -33,6 +39,19 @@ const Dashboard = () => {
                     <h2>Welcome, {data.data.name}.</h2>
                     <MDBRow>
                         <h3>Your offers</h3>
+                        <MDBRow>
+                            {userOffers.data &&
+                                userOffers.data.offers.map(offer => (
+                                    <OfferCard
+                                        key={offer.id}
+                                        title={offer.title}
+                                        description={offer.description}
+                                        price={offer.price}
+                                        image={offer.image}
+                                        id={offer.id}
+                                    />
+                                ))}
+                        </MDBRow>
                     </MDBRow>
                 </MDBCol>
             </MDBRow>

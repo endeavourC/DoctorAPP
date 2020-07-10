@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { Formik } from "formik";
+import { useHistory } from "react-router-dom";
 import {
     MDBContainer,
     MDBRow,
@@ -11,8 +12,10 @@ import {
 } from "mdbreact";
 import FileInput from "../../../components/FileInput";
 import { createOffer } from "../../../data/fetch/offer.fetch";
+import { RES_ERROR, RES_SUCCESS } from "../../../data/constants/user.constants";
 import { UserContext } from "../../../data/context/user.context";
 const CreateOffer = () => {
+    const history = useHistory();
     const user = useContext(UserContext);
     return (
         <MDBContainer className="my-5">
@@ -41,29 +44,38 @@ const CreateOffer = () => {
                         }}
                         validate={values => {
                             const errors = {};
-                            // if (!values.title) {
-                            //     errors.title = "Title is required";
-                            // }
+                            if (!values.title) {
+                                errors.title = "Title is required";
+                            }
 
-                            // if (!values.price) {
-                            //     errors.price = "Price is required";
-                            // }
+                            if (!values.price) {
+                                errors.price = "Price is required";
+                            }
 
-                            // if (!values.description) {
-                            //     errors.description = "Description is required";
-                            // }
+                            if (!values.description) {
+                                errors.description = "Description is required";
+                            }
 
-                            // if (!values.city) {
-                            //     errors.city = "City is required";
-                            // }
+                            if (!values.city) {
+                                errors.city = "City is required";
+                            }
 
                             return errors;
                         }}
-                        onSubmit={(values, { setSubmitting }) => {
+                        onSubmit={(
+                            values,
+                            { setSubmitting, setFieldError }
+                        ) => {
                             setTimeout(() => {
-                                // alert(JSON.stringify(values, null, 2));
-                                // console.log(values);
-                                createOffer(user.getToken(), values);
+                                createOffer(user.getToken(), values).then(
+                                    res => {
+                                        if (res.status === RES_ERROR) {
+                                            setFieldError("image", res.data);
+                                        } else {
+                                            history.goBack();
+                                        }
+                                    }
+                                );
 
                                 setSubmitting(false);
                             }, 400);
@@ -92,7 +104,11 @@ const CreateOffer = () => {
                                     onBlur={handleBlur}
                                     value={values.title}
                                 />
-                                {errors.title && touched.title && errors.title}
+                                <p className="red-text">
+                                    {errors.title &&
+                                        touched.title &&
+                                        errors.title}
+                                </p>
                                 <MDBInput
                                     label="Offer Description"
                                     type="textarea"
@@ -102,9 +118,11 @@ const CreateOffer = () => {
                                     onBlur={handleBlur}
                                     value={values.description}
                                 />
-                                {errors.description &&
-                                    touched.description &&
-                                    errors.description}
+                                <p className="red-text">
+                                    {errors.description &&
+                                        touched.description &&
+                                        errors.description}
+                                </p>
                                 <MDBInput
                                     label="Price"
                                     type="number"
@@ -113,7 +131,11 @@ const CreateOffer = () => {
                                     onBlur={handleBlur}
                                     value={values.price}
                                 />
-                                {errors.price && touched.price && errors.price}
+                                <p className="red-text">
+                                    {errors.price &&
+                                        touched.price &&
+                                        errors.price}
+                                </p>
                                 <MDBInput
                                     label="City"
                                     type="text"
@@ -122,7 +144,9 @@ const CreateOffer = () => {
                                     onBlur={handleBlur}
                                     value={values.city}
                                 />
-                                {errors.city && touched.city && errors.city}
+                                <p className="red-text">
+                                    {errors.city && touched.city && errors.city}
+                                </p>
                                 <FileInput
                                     name="image"
                                     onChange={event => {
@@ -132,6 +156,11 @@ const CreateOffer = () => {
                                         );
                                     }}
                                 />
+                                <p className="red-text">
+                                    {errors.image &&
+                                        touched.image &&
+                                        errors.image}
+                                </p>
                                 <MDBBtn type="submit" disabled={isSubmitting}>
                                     Add offer
                                 </MDBBtn>

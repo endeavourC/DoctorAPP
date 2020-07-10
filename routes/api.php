@@ -31,7 +31,6 @@ Route::prefix('/offers')->group(function(){
     // Get offers by user id
     Route::get('/user/{user_id}', 'OfferController@getOffersByUserId');
 
-
     //Get single offer 
     Route::get('/{offer_id}', 'OfferController@show');
 
