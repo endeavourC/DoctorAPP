@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { Formik } from "formik";
-import { useParams, Redirect } from "react-router-dom";
+import { useParams, Redirect, useHistory } from "react-router-dom";
 import {
     MDBContainer,
     MDBRow,
@@ -13,13 +13,14 @@ import {
 import { useQuery } from "react-query";
 import FileInput from "../../../components/FileInput";
 import { updateOffer } from "../../../data/fetch/offer.fetch";
-import { RES_ERROR, RES_SUCCESS } from "../../../data/constants/user.constants";
+import { RES_ERROR, RES_LOADING } from "../../../data/constants/user.constants";
 import { UserContext } from "../../../data/context/user.context";
 import { editSingleOffer } from "../../../data/fetch/offer.fetch";
 import Loader from "../../../components/Loader";
 const EditOffer = () => {
     const params = useParams();
     const offerId = params.id;
+    const history = useHistory();
     const user = useContext(UserContext);
     const token = user.getToken();
 
@@ -41,7 +42,9 @@ const EditOffer = () => {
         );
     }
 
-    if (!data && !status !== RES_ERROR) return <Loader />;
+    if (!data && status === RES_LOADING) return <Loader />;
+
+    console.log(data);
 
     const {
         price,
@@ -70,14 +73,8 @@ const EditOffer = () => {
                 <MDBCol md="8" sm="12">
                     <h3>Edit Offer</h3>
                     <Formik
-                        initialValues={{
-                            title,
-                            description,
-                            price,
-                            city,
-                            image,
-                            image_thumbnail
-                        }}
+                        enableReinitialize={true}
+                        initialValues={data.offers}
                         validate={values => {
                             const errors = {};
                             if (!values.title) {

@@ -48,7 +48,6 @@ export const updateOffer = async (
         image: values.image,
         image_thumbnail: values.image_thumbnail
     };
-    console.log(isImageUploaded);
     if (isImageUploaded) {
         const upload = await uploadFile(token, values.image);
         const response = await upload.json();

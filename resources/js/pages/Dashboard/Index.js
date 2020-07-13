@@ -37,7 +37,7 @@ const Dashboard = () => {
                 <MDBCol md="8" sm="12">
                     <h2>Welcome, {data.data.name}.</h2>
                     <MDBRow>
-                        <h3>Your offers</h3>
+                        <h3 className="pt-5 w-100 text-center">Your offers</h3>
                         {userOffers.data ? (
                             userOffers.data.offers.length ? (
                                 userOffers.data.offers.map(offer => (
