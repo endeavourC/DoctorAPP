@@ -32,11 +32,15 @@ class ImageUploadController extends Controller
             /*
             * Generate image thumbnail 
             */
-            $imageThumbnail = request('image')->store('images/thumbnails', 'public');
+            $imageThumbnailPath = request('image')->store('images/thumbnails', 'public');
             
-            $imageThumbnail = Image::make(public_path("/storage/{$imageThumbnail}"))->resize(300,300);
+            $imageThumbnail = Image::make(public_path("/storage/{$imageThumbnailPath}"))->resize(300,300);
             $imageThumbnail->save();
 
-            return response()->json(['response' => $image ],200);
+
+            return response()->json([
+                'image' => $image, 
+                'image_thumbnail' => $imageThumbnailPath 
+            ],200);
     }
 }

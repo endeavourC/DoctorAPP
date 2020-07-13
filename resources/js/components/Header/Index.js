@@ -10,6 +10,7 @@ import {
     MDBFormInline
 } from "mdbreact";
 import { UserContext } from "../../data/context/user.context";
+
 const Header = () => {
     const user = useContext(UserContext);
     const [isOpen, setOpen] = useState(false);

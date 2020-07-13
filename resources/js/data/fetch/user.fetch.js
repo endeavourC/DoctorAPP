@@ -57,6 +57,6 @@ export const logoutUser = async token => {
         }
     });
     const data = await request.json();
-    console.log(data);
+
     return data;
 };

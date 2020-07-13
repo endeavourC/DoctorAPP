@@ -18,6 +18,7 @@ class CreateOffersTable extends Migration
             $table->string('title');
             $table->string('city');
             $table->string('image');
+            $table->string('image_thumbnail');
             $table->text('description');
             $table->decimal('price', 8, 2);
             $table->unsignedBigInteger('user_id');

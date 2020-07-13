@@ -10,15 +10,16 @@ import Register from "./pages/Register";
 import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
 import CreateOffer from "./pages/Dashboard/Create-Offer";
+import EditOffer from "./pages/Dashboard/Edit-Offer";
 import Header from "./components/Header";
 import PrivateRoute from "./data/Auth/PrivateRoute";
 // Context API
-import { UserProvider } from "./data/context/user.context";
+import UserProvider from "./data/context/user.context";
 
 function App() {
     return (
-        <UserProvider>
-            <Router>
+        <Router>
+            <UserProvider>
                 <Header />
                 <Switch>
                     <Route exact path="/" component={Home} />
@@ -34,10 +35,15 @@ function App() {
                         path="/dashboard/create-offer"
                         component={CreateOffer}
                     />
+                    <PrivateRoute
+                        exact
+                        path="/dashboard/offers/:id/edit"
+                        component={EditOffer}
+                    />
                     <Route component={ErrorPage} />
                 </Switch>
-            </Router>
-        </UserProvider>
+            </UserProvider>
+        </Router>
     );
 }
 export default App;

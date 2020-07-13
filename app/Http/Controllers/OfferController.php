@@ -14,14 +14,14 @@ class OfferController extends Controller
 
     }
 
-    public function getOffersByUserId(int $id){
+    public function getOffersByUserId(int $offerID){
 
-        return response()->json(['offers' => User::findOrFail($id)->offers()->get() ] , 200);
+        return response()->json(['offers' => User::findOrFail($offerID)->offers()->get() ] , 200);
     }
 
-    public function show(int $id){
+    public function show(int $offerID){
 
-        return response()->json(['offers' => Offer::findOrFail($id) ] ,200);
+        return response()->json(['offers' => Offer::findOrFail($offerID) ] ,200);
 
     }
 
@@ -33,6 +33,7 @@ class OfferController extends Controller
             'price' => 'required|numeric',
             'city' => 'required',
             'image' => 'required',
+            'image_thumbnail' => 'required'
         ]);
 
         if( $validation->fails() ){
@@ -41,13 +42,15 @@ class OfferController extends Controller
                 'status' => 'error',
             ] , 401);
         }
+       
 
         auth()->user()->offers()->create([
             'title' => $request->title,
             'description' => $request->description,
+            'image_thumbnail' => $request->image_thumbnail,
+            'image' => $request->image,
             'price' => $request->price,
             'city' => $request->city,
-            'image' => $request->image
         ]);
 
         return response()->json([
@@ -56,17 +59,37 @@ class OfferController extends Controller
          ] ,200);
     }
 
-    public function edit(int $id){
+    public function edit(int $offerID){
 
-        return response()->json([ 'offers' => Offer::findOrFail($id) ], 200);
+        // Check if current user can edit this offer 
+
+        $offer = auth()->user()->offers()->findOrFail($offerID);
+
+
+        return response()->json([ 'offers' => $offer ], 200);
     }
 
-    public function update(int $id){
-        // Update
+    public function update(int $offerID, Request $request){
+
+        auth()->user()->offers()->findOrFail($offerID)->update([
+            'title' => $request->title,
+            'description' => $request->description,
+            'price' => $request->price,
+            'city' => $request->city,
+            'image' => $request->image,
+            'image_thumbnail' => $request->image_thumbnail,
+        ]);
+
+        return response()->json(['status' => 'success'] , 200);
+
     }
 
-    public function destroy(int $id){
 
+    public function destroy(int $offerID){
+
+        auth()->user()->offers()->where('id', $offerID)->delete();
+
+        return response()->json(['status' => "success"],200);
         // delete
     }
     

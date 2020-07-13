@@ -1,11 +1,12 @@
 import React, { createContext, useState, useEffect } from "react";
 import { useQuery } from "react-query";
 import { isCurrentUserAuth, logoutUser as logout } from "../fetch/user.fetch";
-
+import { withRouter, useHistory } from "react-router-dom";
 export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
     const [isLogged, setLogged] = useState(false);
+    const history = useHistory();
 
     useEffect(() => {
         if (getToken() !== null) {
@@ -46,14 +47,16 @@ export const UserProvider = ({ children }) => {
     };
 
     const logoutUser = () => {
-        logout(getToken());
-        setLogged(false);
-        localStorage.setItem(
-            "loggedUser",
-            JSON.stringify({
-                token: null
-            })
-        );
+        logout(getToken()).then(() => {
+            setLogged(false);
+            localStorage.setItem(
+                "loggedUser",
+                JSON.stringify({
+                    token: null
+                })
+            );
+            history.push("/login");
+        });
     };
 
     return (
@@ -70,3 +73,5 @@ export const UserProvider = ({ children }) => {
         </UserContext.Provider>
     );
 };
+
+export default withRouter(UserProvider);
