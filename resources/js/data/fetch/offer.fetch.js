@@ -21,7 +21,7 @@ export const createOffer = async (token, values) => {
     values.image = uploadResponse.image;
     values.image_thumbnail = uploadResponse.image_thumbnail;
 
-    const request = await fetch(`http://127.0.0.1:8000/api/offers/`, {
+    const request = await fetch(`${process.env.MIX_URL}/api/offers/`, {
         method: "POST",
         headers: {
             Authorization: `Bearer ${token}`,
@@ -75,14 +75,17 @@ export const updateOffer = async (
         ...values,
         ...initialImageValues
     };
-    const request = await fetch(`http://127.0.0.1:8000/api/offers/${offerID}`, {
-        method: "PUT",
-        headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-type": "application/json"
-        },
-        body: JSON.stringify(offerData)
-    });
+    const request = await fetch(
+        `${process.env.MIX_URL}/api/offers/${offerID}`,
+        {
+            method: "PUT",
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-type": "application/json"
+            },
+            body: JSON.stringify(offerData)
+        }
+    );
     const response = await request.json();
 
     return { response, status: "success" };
@@ -92,7 +95,7 @@ export const uploadFile = async (token, file) => {
     const formData = new FormData();
     formData.append("image", file);
 
-    const request = await fetch(`http://127.0.0.1:8000/api/images/`, {
+    const request = await fetch(`${process.env.MIX_URL}/api/images/`, {
         method: "POST",
         headers: {
             Authorization: `Bearer ${token}`
@@ -107,7 +110,7 @@ export const getOffersByUserId = async (key, { userId }) => {
     if (userId === undefined) return false;
 
     const request = await fetch(
-        `http://127.0.0.1:8000/api/offers/user/${userId}`
+        `${process.env.MIX_URL}/api/offers/user/${userId}`
     );
     const response = await request.json();
 
@@ -115,19 +118,22 @@ export const getOffersByUserId = async (key, { userId }) => {
 };
 
 export const deleteOffer = async ({ offerId, token }) => {
-    const request = await fetch(`http://127.0.0.1:8000/api/offers/${offerId}`, {
-        method: "DELETE",
-        headers: {
-            Authorization: `Bearer ${token}`
+    const request = await fetch(
+        `${process.env.MIX_URL}/api/offers/${offerId}`,
+        {
+            method: "DELETE",
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
         }
-    });
+    );
     const response = await request.json();
     return response;
 };
 
 export const editSingleOffer = async (key, { offerId, token }) => {
     const request = await fetch(
-        `http://127.0.0.1:8000/api/offers/${offerId}/edit`,
+        `${process.env.MIX_URL}/api/offers/${offerId}/edit`,
         {
             headers: {
                 Authorization: `Bearer ${token}`

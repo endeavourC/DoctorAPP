@@ -7,7 +7,6 @@ import { Link } from "react-router-dom";
 import { RES_SUCCESS } from "../../../../data/constants/user.constants";
 const OfferCard = ({ id, title, description, price, image_thumbnail }) => {
     const user = useContext(UserContext);
-
     const [mutate] = useMutation(deleteOffer);
 
     const handleDeleteOffer = async offerId => {
@@ -24,7 +23,7 @@ const OfferCard = ({ id, title, description, price, image_thumbnail }) => {
                 <img
                     style={{ width: "150px", height: "150px" }}
                     className="rounded-circle "
-                    src={`http://localhost/doctorapp/public/storage/${image_thumbnail}`}
+                    src={`${process.env.MIX_IMAGE_PATH}/${image_thumbnail}`}
                     alt={title}
                 />
             </div>
