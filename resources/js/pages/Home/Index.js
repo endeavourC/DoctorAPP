@@ -1,11 +1,11 @@
 import React from "react";
 import Hero from "./components/Hero";
-import OfferList from "./components/OfferList";
+import OfferSection from "./components/OfferSection";
 const HomePage = () => {
     return (
         <>
             <Hero />
-            <OfferList />
+            <OfferSection />
         </>
     );
 };

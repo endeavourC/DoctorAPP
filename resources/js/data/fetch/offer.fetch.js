@@ -143,3 +143,11 @@ export const editSingleOffer = async (key, { offerId, token }) => {
     const response = await request.json();
     return response;
 };
+
+export const getOffers = async key => {
+    const request = await fetch(`${process.env.MIX_URL}/api/offers/`);
+
+    const response = await request.json();
+
+    return response;
+};

@@ -5,12 +5,17 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth; 
 use App\Offer;
 use App\User;
+use App\Http\Resources\Offer as OfferResource;
 use Validator;
 class OfferController extends Controller
 {
     public function index(){
 
-        return response()->json(['offers' => Offer::get() ] , 200);
+        $offers = OfferResource::collection(Offer::with('user')->get());
+
+        return response()->json(['offers' => $offers] , 200);
+
+
 
     }
 
