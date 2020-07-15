@@ -23,8 +23,8 @@ function App() {
                 <Header />
                 <Switch>
                     <Route exact path="/" component={Home} />
-                    <Route path="/login" component={Login} />
-                    <Route path="/register" component={Register} />
+                    <Route exact path="/login" component={Login} />
+                    <Route exact path="/register" component={Register} />
                     <PrivateRoute
                         exact
                         path="/dashboard"
@@ -40,7 +40,7 @@ function App() {
                         path="/dashboard/offers/:id/edit"
                         component={EditOffer}
                     />
-                    <Route component={ErrorPage} />
+                    <Route path="*" component={ErrorPage} />
                 </Switch>
             </UserProvider>
         </Router>
