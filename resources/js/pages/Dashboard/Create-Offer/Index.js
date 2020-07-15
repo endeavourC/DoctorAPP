@@ -18,158 +18,128 @@ const CreateOffer = () => {
     const history = useHistory();
     const user = useContext(UserContext);
     return (
-        <MDBContainer className="my-5">
-            <MDBRow>
-                <MDBCol md="4" sm="12" className="card-body">
-                    <MDBNav className="d-flex flex-column font-weight-bold">
-                        <MDBNavLink to="/dashboard/create-offer">
-                            Add new Offer
-                        </MDBNavLink>
-                        <MDBNavLink to="#!">Change Account Details</MDBNavLink>
-                        <MDBNavLink to="#!">Your Orders</MDBNavLink>
-                        <MDBNavLink disabled to="#!">
-                            Your Feedback
-                        </MDBNavLink>
-                    </MDBNav>
-                </MDBCol>
-                <MDBCol md="8" sm="12">
-                    <h3>Create Offer</h3>
-                    <Formik
-                        initialValues={{
-                            title: "",
-                            description: "",
-                            price: "",
-                            city: "",
-                            image: {}
-                        }}
-                        validate={values => {
-                            const errors = {};
-                            if (!values.title) {
-                                errors.title = "Title is required";
-                            }
+        <MDBCol md="8" sm="12">
+            <h3>Create Offer</h3>
+            <Formik
+                initialValues={{
+                    title: "",
+                    description: "",
+                    price: "",
+                    city: "",
+                    image: {}
+                }}
+                validate={values => {
+                    const errors = {};
+                    if (!values.title) {
+                        errors.title = "Title is required";
+                    }
 
-                            if (!values.price) {
-                                errors.price = "Price is required";
-                            }
+                    if (!values.price) {
+                        errors.price = "Price is required";
+                    }
 
-                            if (!values.description) {
-                                errors.description = "Description is required";
-                            }
+                    if (!values.description) {
+                        errors.description = "Description is required";
+                    }
 
-                            if (!values.city) {
-                                errors.city = "City is required";
-                            }
+                    if (!values.city) {
+                        errors.city = "City is required";
+                    }
 
-                            return errors;
-                        }}
-                        onSubmit={(
-                            values,
-                            { setSubmitting, setFieldError }
-                        ) => {
-                            setTimeout(() => {
-                                createOffer(user.getToken(), values).then(
-                                    res => {
-                                        if (res.status === RES_ERROR) {
-                                            setFieldError("image", res.data);
-                                        } else {
-                                            history.goBack();
-                                        }
-                                    }
+                    return errors;
+                }}
+                onSubmit={(values, { setSubmitting, setFieldError }) => {
+                    setTimeout(() => {
+                        createOffer(user.getToken(), values).then(res => {
+                            if (res.status === RES_ERROR) {
+                                setFieldError("image", res.data);
+                            } else {
+                                history.goBack();
+                            }
+                        });
+
+                        setSubmitting(false);
+                    }, 400);
+                }}
+            >
+                {({
+                    values,
+                    errors,
+                    touched,
+                    handleChange,
+                    handleBlur,
+                    handleSubmit,
+                    isSubmitting,
+                    setFieldValue
+                    /* and other goodies */
+                }) => (
+                    <form encType="multipart/form-data" onSubmit={handleSubmit}>
+                        <MDBInput
+                            label="Offer Title"
+                            type="text"
+                            name="title"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.title}
+                        />
+                        <p className="red-text">
+                            {errors.title && touched.title && errors.title}
+                        </p>
+                        <MDBInput
+                            label="Offer Description"
+                            type="textarea"
+                            name="description"
+                            rows="5"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.description}
+                        />
+                        <p className="red-text">
+                            {errors.description &&
+                                touched.description &&
+                                errors.description}
+                        </p>
+                        <MDBInput
+                            label="Price"
+                            type="number"
+                            name="price"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.price}
+                        />
+                        <p className="red-text">
+                            {errors.price && touched.price && errors.price}
+                        </p>
+                        <MDBInput
+                            label="City"
+                            type="text"
+                            name="city"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.city}
+                        />
+                        <p className="red-text">
+                            {errors.city && touched.city && errors.city}
+                        </p>
+                        <FileInput
+                            name="image"
+                            onChange={event => {
+                                setFieldValue(
+                                    "image",
+                                    event.currentTarget.files[0]
                                 );
-
-                                setSubmitting(false);
-                            }, 400);
-                        }}
-                    >
-                        {({
-                            values,
-                            errors,
-                            touched,
-                            handleChange,
-                            handleBlur,
-                            handleSubmit,
-                            isSubmitting,
-                            setFieldValue
-                            /* and other goodies */
-                        }) => (
-                            <form
-                                encType="multipart/form-data"
-                                onSubmit={handleSubmit}
-                            >
-                                <MDBInput
-                                    label="Offer Title"
-                                    type="text"
-                                    name="title"
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    value={values.title}
-                                />
-                                <p className="red-text">
-                                    {errors.title &&
-                                        touched.title &&
-                                        errors.title}
-                                </p>
-                                <MDBInput
-                                    label="Offer Description"
-                                    type="textarea"
-                                    name="description"
-                                    rows="5"
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    value={values.description}
-                                />
-                                <p className="red-text">
-                                    {errors.description &&
-                                        touched.description &&
-                                        errors.description}
-                                </p>
-                                <MDBInput
-                                    label="Price"
-                                    type="number"
-                                    name="price"
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    value={values.price}
-                                />
-                                <p className="red-text">
-                                    {errors.price &&
-                                        touched.price &&
-                                        errors.price}
-                                </p>
-                                <MDBInput
-                                    label="City"
-                                    type="text"
-                                    name="city"
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    value={values.city}
-                                />
-                                <p className="red-text">
-                                    {errors.city && touched.city && errors.city}
-                                </p>
-                                <FileInput
-                                    name="image"
-                                    onChange={event => {
-                                        setFieldValue(
-                                            "image",
-                                            event.currentTarget.files[0]
-                                        );
-                                    }}
-                                />
-                                <p className="red-text">
-                                    {errors.image &&
-                                        touched.image &&
-                                        errors.image}
-                                </p>
-                                <MDBBtn type="submit" disabled={isSubmitting}>
-                                    Add offer
-                                </MDBBtn>
-                            </form>
-                        )}
-                    </Formik>
-                </MDBCol>
-            </MDBRow>
-        </MDBContainer>
+                            }}
+                        />
+                        <p className="red-text">
+                            {errors.image && touched.image && errors.image}
+                        </p>
+                        <MDBBtn type="submit" disabled={isSubmitting}>
+                            Add offer
+                        </MDBBtn>
+                    </form>
+                )}
+            </Formik>
+        </MDBCol>
     );
 };
 

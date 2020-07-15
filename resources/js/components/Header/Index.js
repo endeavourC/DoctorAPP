@@ -31,7 +31,7 @@ const Header = () => {
                     {user.isLogged ? (
                         <>
                             <MDBNavItem>
-                                <MDBNavLink to="/dashboard">
+                                <MDBNavLink to="/dashboard/">
                                     Dashboard
                                 </MDBNavLink>
                             </MDBNavItem>

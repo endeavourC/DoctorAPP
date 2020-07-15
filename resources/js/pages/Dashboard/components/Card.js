@@ -35,7 +35,7 @@ const OfferCard = ({ id, title, description, price, image_thumbnail }) => {
                     </span>
                     <Link
                         className="btn btn-sm btn-success"
-                        to={`dashboard/offers/${id}/edit`}
+                        to={`/dashboard/offers/${id}/edit`}
                     >
                         Edit
                     </Link>

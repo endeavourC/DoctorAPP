@@ -25,21 +25,7 @@ function App() {
                     <Route exact path="/" component={Home} />
                     <Route exact path="/login" component={Login} />
                     <Route exact path="/register" component={Register} />
-                    <PrivateRoute
-                        exact
-                        path="/dashboard"
-                        component={Dashboard}
-                    />
-                    <PrivateRoute
-                        exact
-                        path="/dashboard/create-offer"
-                        component={CreateOffer}
-                    />
-                    <PrivateRoute
-                        exact
-                        path="/dashboard/offers/:id/edit"
-                        component={EditOffer}
-                    />
+                    <PrivateRoute path="/dashboard/" component={Dashboard} />
                     <Route path="*" component={ErrorPage} />
                 </Switch>
             </UserProvider>

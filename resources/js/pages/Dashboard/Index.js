@@ -1,20 +1,13 @@
-import React, { useContext, useMemo } from "react";
+import React, { useContext } from "react";
 import { MDBContainer, MDBRow, MDBCol } from "mdbreact";
-import { getUserData } from "../../data/fetch/user.fetch";
-import { useQuery } from "react-query";
-import { UserContext } from "../../data/context/user.context";
-import Loader from "../../components/Loader";
 import Sidebar from "../../components/Sidebar";
-import Offers from "./components/Offers";
+import { Route, Switch } from "react-router-dom";
+import CreateOffer from "./Create-Offer";
+import EditOffer from "./Edit-Offer";
+import DashboardPanel from "./DashboardPanel";
+import PrivateRoute from "../../data/Auth/PrivateRoute";
+import ErrorPage from "../../pages/404";
 const Dashboard = () => {
-    const { getToken } = useContext(UserContext);
-    const token = getToken();
-
-    const { isLoading, data } = useQuery(["userData", { token }], getUserData, {
-        refetchOnWindowFocus: false
-    });
-    const userId = useMemo(() => data && data.data.id, [data]);
-
     const items = [
         {
             title: "Add new Offer",
@@ -30,18 +23,28 @@ const Dashboard = () => {
         }
     ];
 
-    if (isLoading) return <Loader />;
-
     return (
         <MDBContainer className="my-5">
             <MDBRow>
                 <Sidebar items={items} />
-                <MDBCol md="8" sm="12">
-                    <h2>Welcome, {data.data.name}.</h2>
-                    <MDBRow>
-                        <Offers userId={userId} />
-                    </MDBRow>
-                </MDBCol>
+                <Switch>
+                    <PrivateRoute
+                        exact
+                        path="/dashboard/"
+                        component={DashboardPanel}
+                    />
+                    <PrivateRoute
+                        exact
+                        path="/dashboard/offers/:id/edit"
+                        component={EditOffer}
+                    />
+                    <PrivateRoute
+                        exact
+                        path="/dashboard/create-offer"
+                        component={CreateOffer}
+                    />
+                    <Route path="*" component={ErrorPage} />
+                </Switch>
             </MDBRow>
         </MDBContainer>
     );
