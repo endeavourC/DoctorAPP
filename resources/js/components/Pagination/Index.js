@@ -6,7 +6,13 @@ import {
     MDBCol,
     MDBRow
 } from "mdbreact";
-
+import {
+    SET_CURRENT_PAGE,
+    ADD_PAGE_LENGTH,
+    RESET_PAGE_LENGTH,
+    NEXT_PAGE,
+    PREV_PAGE
+} from "../../data/constants/pagination.constants";
 const initialState = {
     pages: [],
     current_page: 1
@@ -14,27 +20,27 @@ const initialState = {
 
 const pageReducer = (state, action) => {
     switch (action.type) {
-        case "SET_CURRENT_PAGE":
+        case SET_CURRENT_PAGE:
             return {
                 ...state,
                 current_page: action.payload
             };
-        case "ADD_PAGE_LENGTH":
+        case ADD_PAGE_LENGTH:
             return {
                 ...state,
                 pages: [...state.pages, action.payload]
             };
-        case "RESET_PAGE_LENGTH":
+        case RESET_PAGE_LENGTH:
             return {
                 ...state,
                 pages: []
             };
-        case "NEXT_PAGE":
+        case NEXT_PAGE:
             return {
                 ...state,
                 current_page: state.current_page + 1
             };
-        case "PREV_PAGE":
+        case PREV_PAGE:
             return {
                 ...state,
                 current_page: state.current_page - 1
@@ -46,23 +52,23 @@ const PaginationPage = ({ count, current, changePage }) => {
     const [store, dispatch] = useReducer(pageReducer, initialState);
 
     useEffect(() => {
-        dispatch({ type: "RESET_PAGE_LENGTH" });
+        dispatch({ type: RESET_PAGE_LENGTH });
 
         for (let i = 1; i <= count; i++) {
-            dispatch({ type: "ADD_PAGE_LENGTH", payload: i });
+            dispatch({ type: ADD_PAGE_LENGTH, payload: i });
         }
 
-        dispatch({ type: "SET_CURRENT_PAGE", payload: parseInt(current) });
+        dispatch({ type: SET_CURRENT_PAGE, payload: parseInt(current) });
     }, [count, current]);
 
     return (
-        <MDBRow>
+        <MDBRow className="w-100">
             <MDBCol>
-                <MDBPagination circle>
+                <MDBPagination className="justify-content-center" circle>
                     <MDBPageItem
                         onClick={() => {
                             changePage(store.current_page - 1);
-                            dispatch({ type: "PREV_PAGE" });
+                            dispatch({ type: PREV_PAGE });
                         }}
                         disabled={store.current_page === 1 ? true : false}
                     >
@@ -79,7 +85,7 @@ const PaginationPage = ({ count, current, changePage }) => {
                                 onClick={() => {
                                     changePage(page);
                                     dispatch({
-                                        type: "SET_CURRENT_PAGE",
+                                        type: SET_CURRENT_PAGE,
                                         payload: page
                                     });
                                 }}
@@ -94,7 +100,7 @@ const PaginationPage = ({ count, current, changePage }) => {
                         disabled={store.current_page === count ? true : false}
                         onClick={() => {
                             changePage(store.current_page + 1);
-                            dispatch({ type: "NEXT_PAGE" });
+                            dispatch({ type: NEXT_PAGE });
                         }}
                     >
                         <MDBPageNav className="page-link">Next</MDBPageNav>

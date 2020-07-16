@@ -36,7 +36,7 @@ class OfferController extends Controller
         $pageNumber = $request->query('page', 1);
 
 
-        $offers = OfferResource::collection(Offer::with('user')->paginate($pageLimit));
+        $offers = OfferResource::collection(Offer::with('user')->orderBy('created_at', 'DESC')->paginate($pageLimit));
    
         return response()->json(['offers' => $offers, 'pages_count' =>  $page, 'current_page' => $pageNumber ] , 200);
 

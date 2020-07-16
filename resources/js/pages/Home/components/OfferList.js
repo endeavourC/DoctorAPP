@@ -14,8 +14,6 @@ const OfferList = () => {
 
     if (isLoading) return <Loader />;
 
-    // console.log(data);
-
     const handleSetPage = page => {
         setPage(page);
     };
