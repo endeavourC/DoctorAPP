@@ -3,7 +3,6 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-
 class Offer extends JsonResource
 {
     /**
@@ -25,7 +24,7 @@ class Offer extends JsonResource
                 'id' => $this->user->id,
                 'name' => $this->user->name
             ],
-            'created_at' => $this->created_at
+            'created_at' => $this->created_at,
         ];
     }
 }

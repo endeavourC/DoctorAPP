@@ -3,17 +3,42 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth; 
+use Illuminate\Pagination\Paginator;
 use App\Offer;
 use App\User;
 use App\Http\Resources\Offer as OfferResource;
 use Validator;
+
 class OfferController extends Controller
 {
-    public function index(){
+    public function index(Request $request){
 
-        $offers = OfferResource::collection(Offer::with('user')->get());
+        /**
+         * Set how many pages can be on 1 page.
+         */
+        $pageLimit = 5;
 
-        return response()->json(['offers' => $offers] , 200);
+        /**
+         * Get all of offers count.
+         */
+
+        $getOffersCount = Offer::all()->count();
+
+        /**
+         * Get the paginations pages length
+         */
+
+        $page = ceil( $getOffersCount / $pageLimit );
+
+        /**
+        * Get current page number 
+        */
+        $pageNumber = $request->query('page', 1);
+
+
+        $offers = OfferResource::collection(Offer::with('user')->paginate($pageLimit));
+   
+        return response()->json(['offers' => $offers, 'pages_count' =>  $page, 'current_page' => $pageNumber ] , 200);
 
 
 

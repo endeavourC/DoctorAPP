@@ -1,16 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import { useQuery } from "react-query";
 import Loader from "../../../components/Loader";
 import { getOffers } from "../../../data/fetch/offer.fetch";
 import SingleOffer from "./SingleOffer";
+import Pagination from "../../../components/Pagination";
 
 const OfferList = () => {
-    const { isLoading, data } = useQuery("offers", getOffers, {
-        refetchInterval: 10000
+    const [page, setPage] = useState(1);
+
+    const { isLoading, data } = useQuery(["offers", { page }], getOffers, {
+        refetchInterval: 20000
     });
 
-    console.log("get-refetched");
     if (isLoading) return <Loader />;
+
+    // console.log(data);
+
+    const handleSetPage = page => {
+        setPage(page);
+    };
 
     return (
         <div className="row col-md-9 col-sm-12">
@@ -27,6 +35,11 @@ const OfferList = () => {
                         />
                     ))}
             </ul>
+            <Pagination
+                changePage={handleSetPage}
+                current={data.current_page}
+                count={data.pages_count}
+            />
         </div>
     );
 };
