@@ -1,8 +1,8 @@
 import React from "react";
 import OfferCard from "./Card";
-import { getOffersByUserId } from "../../../data/fetch/offer.fetch";
+import { getOffersByUserId } from "@/data/fetch/offer.fetch";
 import { useQuery } from "react-query";
-import Loader from "../../../components/Loader";
+import Loader from "@/components/Loader";
 const Offers = ({ userId }) => {
     const userOffers = useQuery(["userOffers", { userId }], getOffersByUserId, {
         refetchOnWindowFocus: false

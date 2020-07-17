@@ -11,12 +11,12 @@ import {
     MDBBtn
 } from "mdbreact";
 import { useQuery } from "react-query";
-import FileInput from "../../../components/FileInput";
-import { updateOffer } from "../../../data/fetch/offer.fetch";
-import { RES_ERROR, RES_LOADING } from "../../../data/constants/user.constants";
-import { UserContext } from "../../../data/context/user.context";
-import { editSingleOffer } from "../../../data/fetch/offer.fetch";
-import Loader from "../../../components/Loader";
+import FileInput from "@/components/FileInput";
+import { updateOffer } from "@/data/fetch/offer.fetch";
+import { RES_ERROR, RES_LOADING } from "@/data/constants/user.constants";
+import { UserContext } from "@/data/context/user.context";
+import { editSingleOffer } from "@/data/fetch/offer.fetch";
+import Loader from "@/components/Loader";
 const EditOffer = () => {
     const params = useParams();
     const offerId = params.id;

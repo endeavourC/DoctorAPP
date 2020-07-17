@@ -10,10 +10,10 @@ import {
     MDBInput,
     MDBBtn
 } from "mdbreact";
-import FileInput from "../../../components/FileInput";
-import { createOffer } from "../../../data/fetch/offer.fetch";
-import { RES_ERROR, RES_SUCCESS } from "../../../data/constants/user.constants";
-import { UserContext } from "../../../data/context/user.context";
+import FileInput from "@/components/FileInput";
+import { createOffer } from "@/data/fetch/offer.fetch";
+import { RES_ERROR, RES_SUCCESS } from "@/data/constants/user.constants";
+import { UserContext } from "@/data/context/user.context";
 const CreateOffer = () => {
     const history = useHistory();
     const user = useContext(UserContext);

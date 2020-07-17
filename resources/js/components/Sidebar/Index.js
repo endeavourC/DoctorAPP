@@ -1,6 +1,6 @@
 import React from "react";
 import { MDBCol, MDBNav, MDBNavLink } from "mdbreact";
-const Sidebar = ({ items, children, size = 4 }) => {
+const Sidebar = ({ items, children, size = "4" }) => {
     return (
         <MDBCol md={size} sm="12" className="card-body">
             <MDBNav className="d-flex flex-column font-weight-bold">

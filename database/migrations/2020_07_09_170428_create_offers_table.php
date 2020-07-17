@@ -21,6 +21,7 @@ class CreateOffersTable extends Migration
             $table->string('image_thumbnail');
             $table->text('description');
             $table->decimal('price', 8, 2);
+            $table->string('slug');
             $table->unsignedBigInteger('user_id');
             $table->timestamps();
 

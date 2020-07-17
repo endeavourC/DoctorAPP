@@ -1,10 +1,10 @@
 import React, { useContext } from "react";
-import { currency } from "../../../utils/currency";
-import { UserContext } from "../../../data/context/user.context";
+import { currency } from "@/utils/currency";
+import { UserContext } from "@/data/context/user.context";
 import { useMutation, queryCache } from "react-query";
-import { deleteOffer } from "../../../data/fetch/offer.fetch";
+import { deleteOffer } from "@/data/fetch/offer.fetch";
 import { Link } from "react-router-dom";
-import { RES_SUCCESS } from "../../../data/constants/user.constants";
+import { RES_SUCCESS } from "@/data/constants/user.constants";
 const OfferCard = ({ id, title, description, price, image_thumbnail }) => {
     const user = useContext(UserContext);
     const [mutate] = useMutation(deleteOffer);

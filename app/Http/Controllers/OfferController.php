@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth; 
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Str;
 use App\Offer;
 use App\User;
 use App\Http\Resources\Offer as OfferResource;
 use Validator;
+
 
 class OfferController extends Controller
 {
@@ -16,7 +18,7 @@ class OfferController extends Controller
         /**
          * Set how many pages can be on 1 page.
          */
-        $pageLimit = 5;
+        $pageLimit = 3;
 
         /**
          * Get all of offers count.
@@ -49,10 +51,11 @@ class OfferController extends Controller
         return response()->json(['offers' => User::findOrFail($offerID)->offers()->get() ] , 200);
     }
 
-    public function show(int $offerID){
+    public function show(int $offerId, string $offerSlug){
+    
+        $offers = Offer::where('id', $offerId)->firstOrFail();
 
-        return response()->json(['offers' => Offer::findOrFail($offerID) ] ,200);
-
+        return response()->json(['offers' =>  $offers ] ,200);
     }
 
     public function store(Request $request){
@@ -63,7 +66,7 @@ class OfferController extends Controller
             'price' => 'required|numeric',
             'city' => 'required',
             'image' => 'required',
-            'image_thumbnail' => 'required'
+            'image_thumbnail' => 'required',
         ]);
 
         if( $validation->fails() ){
@@ -81,6 +84,7 @@ class OfferController extends Controller
             'image' => $request->image,
             'price' => $request->price,
             'city' => $request->city,
+            'slug' => Str::slug($request->title)
         ]);
 
         return response()->json([

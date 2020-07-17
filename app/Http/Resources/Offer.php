@@ -24,6 +24,7 @@ class Offer extends JsonResource
                 'id' => $this->user->id,
                 'name' => $this->user->name
             ],
+            'slug' => $this->slug,
             'created_at' => $this->created_at,
         ];
     }

@@ -1,9 +1,9 @@
 import React, { useMemo, useContext } from "react";
 import { MDBRow, MDBCol } from "mdbreact";
 import { useQuery } from "react-query";
-import { UserContext } from "../../../data/context/user.context";
-import { getUserData } from "../../../data/fetch/user.fetch";
-import Loader from "../../../components/Loader";
+import { UserContext } from "@/data/context/user.context";
+import { getUserData } from "@/data/fetch/user.fetch";
+import Loader from "@/components/Loader";
 import Offers from "../components/Offers";
 
 const DashboardPanel = () => {

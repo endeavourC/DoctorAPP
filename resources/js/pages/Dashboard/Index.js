@@ -1,12 +1,12 @@
 import React, { useContext } from "react";
 import { MDBContainer, MDBRow, MDBCol } from "mdbreact";
-import Sidebar from "../../components/Sidebar";
+import Sidebar from "@/components/Sidebar";
 import { Route, Switch } from "react-router-dom";
 import CreateOffer from "./Create-Offer";
 import EditOffer from "./Edit-Offer";
 import DashboardPanel from "./DashboardPanel";
-import PrivateRoute from "../../data/Auth/PrivateRoute";
-import ErrorPage from "../../pages/404";
+import PrivateRoute from "@/data/Auth/PrivateRoute";
+import ErrorPage from "@/pages/404";
 const Dashboard = () => {
     const items = [
         {

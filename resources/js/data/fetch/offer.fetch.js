@@ -153,3 +153,13 @@ export const getOffers = async (key, { page = 1 }) => {
 
     return response;
 };
+
+export const GetOffer = async (key, { paramOfferID, paramOfferSlug }) => {
+    const request = await fetch(
+        `${process.env.MIX_URL}/api/offers/${paramOfferID}-${paramOfferSlug}`
+    );
+
+    const response = await request.json();
+
+    return response;
+};

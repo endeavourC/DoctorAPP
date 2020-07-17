@@ -2,10 +2,10 @@ import React, { useContext } from "react";
 import { MDBContainer, MDBInput, MDBBtn } from "mdbreact";
 import { Formik } from "formik";
 import { useHistory, Redirect } from "react-router-dom";
-import Loader from "../../components/Loader";
-import { UserContext } from "../../data/context/user.context";
-import { loginUser } from "../../data/fetch/user.fetch";
-import { RES_ERROR, UNAUTHORIZED } from "../../data/constants/user.constants";
+import Loader from "@/components/Loader";
+import { UserContext } from "@/data/context/user.context";
+import { loginUser } from "@/data/fetch/user.fetch";
+import { RES_ERROR, UNAUTHORIZED } from "@/data/constants/user.constants";
 const Login = () => {
     const history = useHistory();
     const user = useContext(UserContext);

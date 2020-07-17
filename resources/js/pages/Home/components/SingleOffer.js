@@ -1,7 +1,15 @@
 import React from "react";
-import { currency } from "../../../utils/currency";
+import { currency } from "@/utils/currency";
 import { Link } from "mdbreact";
-const SingleOffer = ({ title, price, description, image_thumbnail, user }) => {
+const SingleOffer = ({
+    id,
+    slug,
+    title,
+    price,
+    description,
+    image_thumbnail,
+    user
+}) => {
     return (
         <li className="shadow-sm py-2 my-4 w-100 d-flex">
             <div className="card__imgContainer-rounded">
@@ -25,7 +33,7 @@ const SingleOffer = ({ title, price, description, image_thumbnail, user }) => {
                 </div>
                 <p>{description}</p>
                 <Link
-                    to="/"
+                    to={`/offer/${id}-${slug}`}
                     className="d-inline-block btn btn-small btn-success"
                 >
                     See offer

@@ -15,3 +15,12 @@ mix.react("resources/js/app.js", "public/js").sass(
     "resources/sass/app.scss",
     "public/css"
 );
+
+mix.webpackConfig({
+    resolve: {
+        extensions: [".js", ".jsx"],
+        alias: {
+            "@": __dirname + "/resources/js"
+        }
+    }
+});

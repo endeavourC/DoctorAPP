@@ -32,7 +32,7 @@ Route::prefix('/offers')->group(function(){
     Route::get('/user/{user_id}', 'OfferController@getOffersByUserId');
 
     //Get single offer 
-    Route::get('/{offer_id}', 'OfferController@show');
+    Route::get('/{offer_id}-{offer_title}', 'OfferController@show');
 
     // Add offer
     Route::middleware('auth:api')->post('/', 'OfferController@store');
