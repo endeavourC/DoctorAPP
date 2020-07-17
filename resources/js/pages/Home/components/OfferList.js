@@ -1,16 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useQuery } from "react-query";
 import Loader from "@/components/Loader";
 import { getOffers } from "@/data/fetch/offer.fetch";
 import SingleOffer from "./SingleOffer";
 import Pagination from "@/components/Pagination";
+import { OfferContext } from "@/data/context/offer.context";
 
 const OfferList = () => {
+    const offerStore = useContext(OfferContext);
+
     const [page, setPage] = useState(1);
 
-    const { isLoading, data } = useQuery(["offers", { page }], getOffers, {
-        refetchInterval: 20000
-    });
+    const { isLoading, data } = offerStore.getOffers(page);
 
     if (isLoading) return <Loader />;
 

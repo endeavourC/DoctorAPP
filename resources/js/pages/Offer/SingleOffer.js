@@ -1,21 +1,27 @@
 import React from "react";
 import { useQuery } from "react-query";
-import { useParams } from "react-router-dom";
+import { useParams, Redirect } from "react-router-dom";
 import Hero from "@/components/Hero";
 import { GetOffer } from "@/data/fetch/offer.fetch";
 import Loader from "@/components/Loader";
 import { currency } from "@/utils/currency";
+import { RES_ERROR } from "@/data/constants/user.constants";
 const SingleOffer = () => {
     const params = useParams();
     const paramOfferID = params.offerId;
     const paramOfferSlug = params.offerSlug;
-    const { isLoading, data } = useQuery(
+    const { isLoading, data, status } = useQuery(
         ["singleOffer", { paramOfferID, paramOfferSlug }],
-        GetOffer
+        GetOffer,
+        {
+            retry: 0,
+            refetchOnWindowFocus: false
+        }
     );
 
     if (isLoading) return <Loader />;
 
+    if (status === RES_ERROR) return <Redirect to="/" />;
     const { id, title, description, image, price, city } = data.offers;
 
     console.log(data);
@@ -26,7 +32,7 @@ const SingleOffer = () => {
                 <div className="row">
                     <div className="mt-n5 col-md-6 col-sm-12">
                         <img
-                            className="img-fluid"
+                            className="img-fluid border"
                             src={`${process.env.MIX_IMAGE_PATH}/${image}`}
                             alt={title}
                         />
