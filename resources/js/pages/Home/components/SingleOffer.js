@@ -8,6 +8,7 @@ const SingleOffer = ({
     price,
     description,
     image_thumbnail,
+    city,
     user
 }) => {
     return (
@@ -20,7 +21,8 @@ const SingleOffer = ({
                     alt={title}
                 />
                 <span className="pt-2 d-block text-center text-primary muted">
-                    {user}
+                    <p>{user}</p>
+                    <p className="text-secondary">{city}</p>
                 </span>
             </div>
             <article className="p-3">

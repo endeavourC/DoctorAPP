@@ -9,41 +9,42 @@ use App\Offer;
 use App\User;
 use App\Http\Resources\Offer as OfferResource;
 use Validator;
-
+use App\Pagination\Pagination;
+// Filters
+use App\Filters\MinPrice;
+use App\Filters\MaxPrice;
+use App\Filters\City;
 
 class OfferController extends Controller
 {
-    public function index(Request $request){
+    public function index(Request $request, Offer $offer){
+        
+        // Filters
+        $query = (new Offer)->newQuery();
 
-        /**
-         * Set how many pages can be on 1 page.
-         */
-        $pageLimit = 3;
+        if($request->has('min-price')){
+            MinPrice::add($query, $request->query('min-price'));
+        }
 
-        /**
-         * Get all of offers count.
-         */
+        if($request->has('max-price')){
+            MaxPrice::add($query, $request->query('max-price'));
+        }
 
-        $getOffersCount = Offer::all()->count();
+        if($request->has('city')){
+            City::add($query, $request->query('city'));
+        }
 
-        /**
-         * Get the paginations pages length
-         */
+        // Pagination 
 
-        $page = ceil( $getOffersCount / $pageLimit );
+        $pageLimit = 5;
+       
+        $getPageCounts = Pagination::getPagesCount($query, $pageLimit);
 
-        /**
-        * Get current page number 
-        */
-        $pageNumber = $request->query('page', 1);
+        $getCurrentPage = Pagination::getCurrentPage($request);
 
-
-        $offers = OfferResource::collection(Offer::with('user')->orderBy('created_at', 'DESC')->paginate($pageLimit));
-   
-        return response()->json(['offers' => $offers, 'pages_count' =>  $page, 'current_page' => $pageNumber ] , 200);
-
-
-
+        $offers = OfferResource::collection($query->orderBy('created_at', 'DESC')->paginate($pageLimit));
+        
+        return response()->json(['offers' => $offers, 'pages_count' =>  $getPageCounts, 'current_page' => $getCurrentPage ] , 200);
     }
 
     public function getOffersByUserId(int $offerID){
@@ -112,6 +113,7 @@ class OfferController extends Controller
             'city' => $request->city,
             'image' => $request->image,
             'image_thumbnail' => $request->image_thumbnail,
+            'slug' => Str::slug($request->title)
         ]);
 
         return response()->json(['status' => 'success'] , 200);

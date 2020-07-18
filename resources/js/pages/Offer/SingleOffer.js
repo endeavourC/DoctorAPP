@@ -22,9 +22,9 @@ const SingleOffer = () => {
     if (isLoading) return <Loader />;
 
     if (status === RES_ERROR) return <Redirect to="/" />;
+
     const { id, title, description, image, price, city } = data.offers;
 
-    console.log(data);
     return (
         <>
             <Hero title={title} />

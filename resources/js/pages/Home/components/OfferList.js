@@ -9,27 +9,24 @@ import { OfferContext } from "@/data/context/offer.context";
 const OfferList = () => {
     const offerStore = useContext(OfferContext);
 
-    const [page, setPage] = useState(1);
+    // const [page, setPage] = useState(1);
 
-    const { isLoading, data } = offerStore.getOffers(page);
+    const { isLoading, offers } = offerStore.getOffers();
 
     if (isLoading) return <Loader />;
-
-    const handleSetPage = page => {
-        setPage(page);
-    };
 
     return (
         <div className="row col-md-9 col-sm-12">
             <ul className="w-100" style={{ listStyle: "none" }}>
-                {data && data.offers.length ? (
-                    data.offers.map(offer => (
+                {offers && offers.offers.length ? (
+                    offers.offers.map(offer => (
                         <SingleOffer
                             title={offer.title}
                             description={offer.description}
                             price={offer.price}
                             user={offer.user.name}
                             id={offer.id}
+                            city={offer.city}
                             slug={offer.slug}
                             image_thumbnail={offer.image_thumbnail}
                             key={offer.id}
@@ -39,13 +36,13 @@ const OfferList = () => {
                     <p>There is no offer yet.</p>
                 )}
             </ul>
-            {data.offers.length > 0 && (
+            {offers && offers.offers.length > 0 ? (
                 <Pagination
-                    changePage={handleSetPage}
-                    current={data.current_page}
-                    count={data.pages_count}
+                    changePage={offerStore.setPage}
+                    current={offers.current_page}
+                    count={offers.pages_count}
                 />
-            )}
+            ) : null}
         </div>
     );
 };

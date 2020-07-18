@@ -1,25 +1,31 @@
 import React, { useState, useContext, useEffect } from "react";
 import SliderInput from "@/components/SliderInput";
 import { OfferContext } from "@/data/context/offer.context";
+import SelectInput from "@/components/SelectInput";
 const OfferFilters = () => {
-    const [minPrice, setMinPrice] = useState(0);
-    const [maxPrice, setMaxPrice] = useState(0);
-    const [city, setCity] = useState(0);
+    const offerStore = useContext(OfferContext);
 
-    const handleInputChange = (stateType, value) => {
-        stateType(value);
-    };
+    const handleInputChange = offerStore.handleInputChange;
 
     return (
         <form method="GET" action="">
             <SliderInput
                 onChange={handleInputChange}
-                stateType={setMinPrice}
+                stateType={offerStore.setMinPrice}
                 name="min-price"
                 title="Min Price"
-                currentValue={minPrice}
+                currentValue={offerStore.minPrice}
                 maxValue={110}
             />
+            <SliderInput
+                onChange={handleInputChange}
+                stateType={offerStore.setMaxPrice}
+                name="max-price"
+                title="Max Price"
+                currentValue={offerStore.maxPrice}
+                maxValue={110}
+            />
+            <SelectInput options={[{ name: "Opole", value: "Opole" }]} />
         </form>
     );
 };
