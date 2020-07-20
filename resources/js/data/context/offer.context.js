@@ -1,27 +1,65 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect, useCallback } from "react";
+import { useHistory } from "react-router-dom";
 import { useQuery } from "react-query";
-import { getOffers as fetchOffers } from "@/data/fetch/offer.fetch";
-
+import {
+    getOffers as fetchOffers,
+    getOffersByFilters
+} from "@/data/fetch/offer.fetch";
+import { filter } from "@/utils/filter";
 export const OfferContext = createContext();
 
 export const OfferProvider = ({ children }) => {
+    const history = useHistory();
     const [offers, setOffers] = useState();
     const [page, setPage] = useState(1);
-    const [minPrice, setMinPrice] = useState(0);
-    const [maxPrice, setMaxPrice] = useState(0);
-    const [city, setCity] = useState(0);
+    const [filters, setFilters] = useState({
+        minPrice: "",
+        maxPrice: "",
+        city: ""
+    });
+
+    const params = history.location.search.replace("?", "");
 
     /**
      *  Query to get the offers from API.
      *  @param int
+     *  @param object
      */
 
-    const { isLoading, data } = useQuery(["offers", { page }], fetchOffers, {
-        refetchInterval: 20000
-    });
+    const { isLoading, data } = useQuery(
+        ["offers", { page, params }],
+        fetchOffers,
+        {
+            refetchInterval: 20000
+        }
+    );
+
     useEffect(() => {
         setOffers(data);
-    }, [data]);
+    }, [data, page]);
+
+    useEffect(() => {
+        // Get only active filters
+        const getResults = setTimeout(() => {
+            const activatedFilters = filter(
+                filters,
+                filter => filter !== null && filter !== ""
+            );
+
+            //Make 'key=value' array
+            const query = Object.entries(activatedFilters).map(
+                ([key, value]) => `${key}=${value}`
+            );
+
+            //Push all of available filters to history
+
+            history.push({
+                search: query.join("&")
+            });
+        }, 500);
+
+        return () => clearTimeout(getResults);
+    }, [filters]);
 
     /**
      *  @return {isLoading, offers}
@@ -40,14 +78,24 @@ export const OfferProvider = ({ children }) => {
         setPage(page);
     };
 
+    const getFilters = () => filters;
+
     /**
      *  Change state of current Slider Input
      *  @param stateType is callback Function from state
      *  @param value is the current value of the slider input
      */
 
-    const handleInputChange = (stateType, value) => {
-        stateType(value);
+    const handleCityInputChange = value => {
+        setFilters(prev => ({ ...prev, city: value }));
+    };
+
+    const handleMinPriceInputChange = value => {
+        setFilters(prev => ({ ...prev, minPrice: value }));
+    };
+
+    const handleMaxPriceInputChange = value => {
+        setFilters(prev => ({ ...prev, maxPrice: value }));
     };
 
     return (
@@ -55,11 +103,10 @@ export const OfferProvider = ({ children }) => {
             value={{
                 getOffers,
                 setPage: handleSetPage,
-                handleInputChange,
-                maxPrice,
-                minPrice,
-                setMinPrice,
-                setMaxPrice
+                handleCityInputChange,
+                handleMinPriceInputChange,
+                handleMaxPriceInputChange,
+                getFilters
             }}
         >
             {children}

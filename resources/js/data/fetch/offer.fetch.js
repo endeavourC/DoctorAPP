@@ -1,3 +1,5 @@
+import { filter } from "@/utils/filter";
+
 export const createOffer = async (token, values) => {
     const upload = await uploadFile(token, values.image);
 
@@ -144,9 +146,9 @@ export const editSingleOffer = async (key, { offerId, token }) => {
     return response;
 };
 
-export const getOffers = async (key, { page = 1 }) => {
+export const getOffers = async (key, { page = 1, params }) => {
     const request = await fetch(
-        `${process.env.MIX_URL}/api/offers?page=${page}`
+        `${process.env.MIX_URL}/api/offers?page=${page}&${params}`
     );
 
     const response = await request.json();
@@ -163,3 +165,13 @@ export const GetOffer = async (key, { paramOfferID, paramOfferSlug }) => {
 
     return response;
 };
+
+// export const getOffersByFilters = async (key, { city, minPrice, maxPrice }) => {
+//     const request = await fetch(
+//         `${process.env.MIX_URL}/api/offers?city=${city}&min-price=${minPrice}&max-price=${maxPrice}`
+//     );
+
+//     const response = await request.json();
+
+//     return response;
+// };

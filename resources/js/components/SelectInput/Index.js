@@ -1,10 +1,13 @@
 import React from "react";
 
-const SelectInput = ({ options, title = "Choose your option" }) => {
+const SelectInput = ({ onChange, options, title = "Choose your option" }) => {
     return (
         <div>
-            <select className="browser-default custom-select">
-                <option>{title}</option>
+            <select
+                onChange={ev => onChange(ev.target.value)}
+                className="browser-default custom-select"
+            >
+                <option value="">{title}</option>
                 {options.map(option => (
                     <option key={option.value} value={option.value}>
                         {option.name}

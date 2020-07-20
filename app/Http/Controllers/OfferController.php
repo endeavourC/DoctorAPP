@@ -22,12 +22,12 @@ class OfferController extends Controller
         // Filters
         $query = (new Offer)->newQuery();
 
-        if($request->has('min-price')){
-            MinPrice::add($query, $request->query('min-price'));
+        if($request->has('minPrice')){
+            MinPrice::add($query, $request->query('minPrice'));
         }
 
-        if($request->has('max-price')){
-            MaxPrice::add($query, $request->query('max-price'));
+        if($request->has('maxPrice')){
+            MaxPrice::add($query, $request->query('maxPrice'));
         }
 
         if($request->has('city')){
