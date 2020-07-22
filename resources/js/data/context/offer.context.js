@@ -6,19 +6,23 @@ import {
     getOffersByFilters
 } from "@/data/fetch/offer.fetch";
 import { filter } from "@/utils/filter";
+
 export const OfferContext = createContext();
 
 export const OfferProvider = ({ children }) => {
     const history = useHistory();
     const [offers, setOffers] = useState();
     const [page, setPage] = useState(1);
+
+    const URLParmas = new URLSearchParams(history.location.search);
+
     const [filters, setFilters] = useState({
-        minPrice: "",
-        maxPrice: "",
-        city: ""
+        minPrice: URLParmas.get("minPrice") || "",
+        maxPrice: URLParmas.get("maxPrice") || "",
+        city: URLParmas.get("city") || ""
     });
 
-    const params = history.location.search.replace("?", "");
+    const stringifyParams = history.location.search.replace("?", "");
 
     /**
      *  Query to get the offers from API.
@@ -27,7 +31,7 @@ export const OfferProvider = ({ children }) => {
      */
 
     const { isLoading, data } = useQuery(
-        ["offers", { page, params }],
+        ["offers", { page, stringifyParams }],
         fetchOffers,
         {
             refetchInterval: 20000
