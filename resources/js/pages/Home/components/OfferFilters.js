@@ -5,12 +5,7 @@ import { MDBInput } from "mdbreact";
 const OfferFilters = () => {
     const offerStore = useContext(OfferContext);
 
-    const {
-        getFilters,
-        handleMinPriceInputChange,
-        handleMaxPriceInputChange,
-        handleCityInputChange
-    } = offerStore;
+    const { getFilters, handleFilterChange } = offerStore;
 
     const filters = getFilters();
 
@@ -23,7 +18,7 @@ const OfferFilters = () => {
                         type="number"
                         value={filters.minPrice}
                         onChange={e =>
-                            handleMinPriceInputChange(e.target.value)
+                            handleFilterChange("minPrice", e.target.value)
                         }
                     />
                 </div>
@@ -33,13 +28,14 @@ const OfferFilters = () => {
                         value={filters.maxPrice}
                         type="number"
                         onChange={e =>
-                            handleMaxPriceInputChange(e.target.value)
+                            handleFilterChange("maxPrice", e.target.value)
                         }
                     />
                 </div>
             </div>
             <SelectInput
-                onChange={handleCityInputChange}
+                onChange={handleFilterChange}
+                stateType="city"
                 options={[{ name: "Opole", value: "Opole" }]}
             />
             {/* <button className="m-0 mt-5  w-100 btn btn-primary">Filter</button> */}

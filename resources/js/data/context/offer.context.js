@@ -86,16 +86,8 @@ export const OfferProvider = ({ children }) => {
      *  @param value is the current value of the slider input
      */
 
-    const handleCityInputChange = value => {
-        setFilters(prev => ({ ...prev, city: value }));
-    };
-
-    const handleMinPriceInputChange = value => {
-        setFilters(prev => ({ ...prev, minPrice: value }));
-    };
-
-    const handleMaxPriceInputChange = value => {
-        setFilters(prev => ({ ...prev, maxPrice: value }));
+    const handleFilterChange = (stateType, value) => {
+        setFilters(prev => ({ ...prev, [stateType]: value }));
     };
 
     return (
@@ -103,9 +95,7 @@ export const OfferProvider = ({ children }) => {
             value={{
                 getOffers,
                 setPage: handleSetPage,
-                handleCityInputChange,
-                handleMinPriceInputChange,
-                handleMaxPriceInputChange,
+                handleFilterChange,
                 getFilters
             }}
         >
