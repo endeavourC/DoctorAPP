@@ -36,6 +36,7 @@ const OfferFilters = () => {
             <SelectInput
                 onChange={handleFilterChange}
                 stateType="city"
+                currentValue={filters.city}
                 options={[{ name: "Opole", value: "Opole" }]}
             />
             {/* <button className="m-0 mt-5  w-100 btn btn-primary">Filter</button> */}

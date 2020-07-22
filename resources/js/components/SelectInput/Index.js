@@ -2,6 +2,7 @@ import React from "react";
 
 const SelectInput = ({
     onChange,
+    currentValue,
     stateType,
     options,
     title = "Choose your option"
@@ -14,7 +15,11 @@ const SelectInput = ({
             >
                 <option value="">{title}</option>
                 {options.map(option => (
-                    <option key={option.value} value={option.value}>
+                    <option
+                        selected={option.value === currentValue ? true : false}
+                        key={option.value}
+                        value={option.value}
+                    >
                         {option.name}
                     </option>
                 ))}
